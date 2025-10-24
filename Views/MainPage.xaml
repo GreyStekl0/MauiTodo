@@ -31,7 +31,7 @@
         <CollectionView ItemsSource="{Binding Items}"
                         SelectionMode="None">
             <CollectionView.EmptyView>
-                <Label Text="No tasks yet. Add your first one!"
+                <Label Text="No tasks yet."
                        FontAttributes="Italic"
                        HorizontalOptions="Center"
                        Margin="0,20" />
