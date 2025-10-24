@@ -1,9 +1,18 @@
-﻿namespace MauiTodo;
+﻿using MauiTodo.Views;
 
-public partial class AppShell : Shell
+namespace MauiTodo;
+
+public partial class AppShell
 {
-	public AppShell()
+	public AppShell(MainPage mainPage)
 	{
 		InitializeComponent();
+
+		Items.Add(new ShellContent
+		{
+			Title = "Tasks",
+			Content = mainPage,
+			Route = nameof(MainPage)
+		});
 	}
 }

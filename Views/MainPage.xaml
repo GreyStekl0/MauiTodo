@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MauiTodo.ViewModels"
+             xmlns:models="clr-namespace:MauiTodo.Models"
+             x:Class="MauiTodo.Views.MainPage"
+             x:DataType="viewModels:TodoViewModel"
+             x:Name="TodoPage"
+             Title="Tasks">
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Entry Grid.Column="0"
+                   Placeholder="New todo..."
+                   Text="{Binding NewTitle, Mode=TwoWay}"
+                   ReturnType="Done" />
+            <Button Grid.Column="1"
+                    Text="+"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    WidthRequest="48"
+                    HeightRequest="48"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    FontAutoScalingEnabled="False"
+                    CornerRadius="24"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    Command="{Binding AddTodoCommand}" />
+        </Grid>
+        <CollectionView ItemsSource="{Binding Items}"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="No tasks yet. Add your first one!"
+                       FontAttributes="Italic"
+                       HorizontalOptions="Center"
+                       Margin="0,20" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TodoItem">
+                    <Grid ColumnDefinitions="Auto,*,48"
+                          Padding="0,4"
+                          ColumnSpacing="12"
+                          HorizontalOptions="Fill">
+                        <CheckBox Grid.Column="0"
+                                  WidthRequest="24"
+                                  HeightRequest="24"
+                                  MinimumWidthRequest="0"
+                                  MinimumHeightRequest="0"
+                                  HorizontalOptions="Start"
+                                  VerticalOptions="Center"
+                                  IsChecked="{Binding IsCompleted, Mode=OneWay}">
+                            <CheckBox.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={x:Reference TodoPage}, Path=BindingContext.ToggleCompletedCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </CheckBox.GestureRecognizers>
+                        </CheckBox>
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsCompleted}"
+                                             Value="True">
+                                    <Setter Property="TextColor" Value="Gray" />
+                                    <Setter Property="TextDecorations" Value="Strikethrough" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Button Grid.Column="2"
+                                Text="✕"
+                                BackgroundColor="Tomato"
+                                TextColor="White"
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                CornerRadius="24"
+                                Padding="0"
+                                FontSize="28"
+                                FontAttributes="Bold"
+                                FontAutoScalingEnabled="False"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                Command="{Binding Source={x:Reference TodoPage}, Path=BindingContext.DeleteTodoCommand}"
+                                CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
